@@ -106,25 +106,24 @@ function addDepartment() {
           menu();
         }
       );
-    });
-}
+    }
 function addRole() {
   inquirer
     .prompt([
       {
         type: "input",
         name: "newTitle",
-        message: "What is the title of the new role?",
+        message: "add the new title",
       },
       {
         type: "input",
         name: "newSal",
-        message: "What is the salary of the new role?",
+        message: "enter the new salary",
       },
       {
         type: "input",
         name: "newDept",
-        message: "What is the department of the new role?",
+        message: "enter the department",
       },
     ])
     .then((RoleChoices) => {
@@ -133,50 +132,57 @@ function addRole() {
         RoleChoices.newSal,
         RoleChoices.newDept
       );
-      function addRole() {
-        inquirer
-          .prompt([
-            {
-              type: "input",
-              name: "newTitle",
-              message: "add the new title",
-            },
-            {
-              type: "input",
-              name: "newSal",
-              message: "enter the new salary",
-            },
-            {
-              type: "input",
-              name: "newDept",
-              message: "enter the department",
-            },
-          ])
-          .then((RoleChoices) => {
-            console.log(
-              RoleChoices.newTitle,
-              RoleChoices.newSal,
-              RoleChoices.newDept
-            );
-            connection.query(
-              `INSERT INTO role (title, salary, department_id) VALUES ('${RoleChoices.newTitle}'),(${RoleChoices.newSal}),(${RoleChoices.newDept})`,
-              function (error, results) {
-                if (error) {
-                  throw error;
-                }
-                console.log("Successfully added to the role table");
-                menu();
-              }
-            );
-          });
-      }
+      connection.query(
+        `INSERT INTO role (title, salary, department_id) VALUES ('${RoleChoices.newTitle}',${RoleChoices.newSal},${RoleChoices.newDept})`,
         function (error, results) {
           if (error) {
             throw error;
           }
-          console.log("Successfully added to the role table");
+          console.log("Successfully added the new role", results);
           menu();
-        }
-      );
-    });
-}
+        },
+      ])
+    }
+  );
+  function addEmployee() {
+    inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "firstName",
+        message: "Add the employee first name",
+      },
+      {
+        type: "input",
+        name: "lastName",
+        message: "Add the employee last name",
+      },
+      {
+        type: "input",
+        name: "newRole",
+        message: "Enter the role of the new employee",
+      }, 
+      {
+        type: "input",
+        name: "newMgr",
+        message: "Enter the manager id of the new employee if applicable",
+      },
+    );
+  }
+.then((EmpChoices) => {
+  console.log(
+    EmpChoices.firstName,
+    EmpChoices.lastName,
+    EmpChoices.newRole,
+    EmpChoices.newMgr
+  );
+  connection.query(
+    `INSERT INTO employee (first_name, last_name, role_id) VALUES ('${EmpChoices.firstName}',${EmpChoices.lastName},${EmpChoices.newRole})`,
+    function (error, results) {
+      if (error) {
+        throw error;
+      }
+      console.log("Successfully added new employee", results);
+      menu();
+    }
+  );
