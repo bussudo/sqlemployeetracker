@@ -116,39 +116,43 @@ function addRole() {
     console.table(results);
     menu();
   });
-}
-inquirer
-  .prompt([
-    {
-      type: "input",
-      name: "newTitle",
-      message: "add the new title",
-    },
-    {
-      type: "input",
-      name: "newSal",
-      message: "enter the new salary",
-    },
-    {
-      type: "input",
-      name: "newDept",
-      message: "enter the department",
-    },
-  ])
-  .then((RoleChoices) => {
-    console.log(RoleChoices.newTitle, RoleChoices.newSal, RoleChoices.newDept),
-      connection.query(
-        `INSERT INTO role (title, salary, department_id) VALUES ('${RoleChoices.newTitle}',${RoleChoices.newSal},${RoleChoices.newDept})`,
-        function (error, results) {
-          if (error) {
-            throw error;
-          }
-          console.log("Successfully added the new role", results);
-          menu();
-        }
-      );
-  });
 
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "newTitle",
+        message: "add the new title",
+      },
+      {
+        type: "input",
+        name: "newSal",
+        message: "enter the new salary",
+      },
+      {
+        type: "input",
+        name: "newDept",
+        message: "enter the department",
+      },
+    ])
+    .then((RoleChoices) => {
+      console.log(
+        RoleChoices.newTitle,
+        RoleChoices.newSal,
+        RoleChoices.newDept
+      ),
+        connection.query(
+          `INSERT INTO role (title, salary, department_id) VALUES ('${RoleChoices.newTitle}',${RoleChoices.newSal},${RoleChoices.newDept})`,
+          function (error, results) {
+            if (error) {
+              throw error;
+            }
+            console.log("Successfully added the new role", results);
+            menu();
+          }
+        );
+    });
+}
 function addEmployee() {
   connection.query("SELECT * from employee", function (error, results) {
     if (error) {
@@ -169,6 +173,7 @@ function addEmployee() {
           name: role.title,
           value: role.id,
         };
+        console.log(roleList);
       });
       console.log(empList);
       inquirer
