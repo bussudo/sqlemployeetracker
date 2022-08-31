@@ -11,6 +11,7 @@ connection.connect(function (error) {
   if (error) {
     throw error;
   }
+
   console.log("connected");
   menu();
 });
@@ -108,82 +109,145 @@ function addDepartment() {
     });
 }
 function addRole() {
-  inquirer
-    .prompt([
-      {
-        type: "input",
-        name: "newTitle",
-        message: "add the new title",
-      },
-      {
-        type: "input",
-        name: "newSal",
-        message: "enter the new salary",
-      },
-      {
-        type: "input",
-        name: "newDept",
-        message: "enter the department",
-      },
-    ])
-    .then((RoleChoices) => {
-      console.log(
-        RoleChoices.newTitle,
-        RoleChoices.newSal,
-        RoleChoices.newDept
-      ),
-        connection.query(
-          `INSERT INTO role (title, salary, department_id) VALUES ('${RoleChoices.newTitle}',${RoleChoices.newSal},${RoleChoices.newDept})`,
-          function (error, results) {
-            if (error) {
-              throw error;
-            }
-            console.log("Successfully added the new role", results);
-            menu();
-          }
-        );
-    });
+  connection.query("SELECT * FROM department", function (error, results) {
+    if (error) {
+      throw error;
+    }
+    console.table(results);
+    menu();
+  });
 }
-function addEmployee() {
-  inquirer
-    .prompt([
-      {
-        type: "input",
-        name: "firstName",
-        message: "Add the employee first name",
-      },
-      {
-        type: "input",
-        name: "lastName",
-        message: "Add the employee last name",
-      },
-      {
-        type: "input",
-        name: "newRole",
-        message: "Enter the role of the new employee",
-      },
-      {
-        type: "input",
-        name: "newMgr",
-        message: "Enter the manager id of the new employee if applicable",
-      },
-    ])
-    .then((EmpChoices) => {
-      console.log(
-        EmpChoices.firstName,
-        EmpChoices.lastName,
-        EmpChoices.newRole,
-        EmpChoices.newMgr
-      );
+inquirer
+  .prompt([
+    {
+      type: "input",
+      name: "newTitle",
+      message: "add the new title",
+    },
+    {
+      type: "input",
+      name: "newSal",
+      message: "enter the new salary",
+    },
+    {
+      type: "input",
+      name: "newDept",
+      message: "enter the department",
+    },
+  ])
+  .then((RoleChoices) => {
+    console.log(RoleChoices.newTitle, RoleChoices.newSal, RoleChoices.newDept),
       connection.query(
-        `INSERT INTO employee (first_name, last_name, role_id) VALUES ('${EmpChoices.firstName}','${EmpChoices.lastName}','${EmpChoices.newRole}')`,
+        `INSERT INTO role (title, salary, department_id) VALUES ('${RoleChoices.newTitle}',${RoleChoices.newSal},${RoleChoices.newDept})`,
         function (error, results) {
           if (error) {
             throw error;
           }
-          console.log("Successfully added new employee", results);
+          console.log("Successfully added the new role", results);
           menu();
         }
       );
+  });
+
+function addEmployee() {
+  connection.query("SELECT * from employee", function (error, results) {
+    if (error) {
+      throw error;
+    }
+    var empList = results.map((employee) => {
+      return {
+        name: employee.first_name + " " + employee.last_name,
+        value: employee.id,
+      };
     });
+    connection.query("SELECT * from role", function (error, results) {
+      if (error) {
+        throw error;
+      }
+      var roleList = results.map((role) => {
+        return {
+          name: role.title,
+          value: role.id,
+        };
+      });
+      console.log(empList);
+      inquirer
+        .prompt([
+          {
+            type: "input",
+            name: "firstName",
+            message: "Add the employee first name",
+          },
+          {
+            type: "input",
+            name: "lastName",
+            message: "Add the employee last name",
+          },
+          {
+            type: "list",
+            name: "newRole",
+            message: "Select the role of the new employee",
+            choices: roleList,
+          },
+          {
+            type: "input",
+            name: "newMgr",
+            message: "Select the manager id of the new employee if applicable",
+            choices: empList,
+          },
+        ])
+        .then((EmpChoices) => {
+          console.log(
+            EmpChoices.firstName,
+            EmpChoices.lastName,
+            EmpChoices.newRole,
+            EmpChoices.newMgr
+          );
+          menu();
+        });
+    });
+  });
+}
+function updRole() {
+  connection.query("SELECT * FROM employee", function (error, results) {
+    if (error) {
+      throw error;
+    }
+    var empList = results.map((employee) => {
+      return {
+        name: employee.first_name + "" + employee.last_name,
+        value: employee.id,
+      };
+    });
+    connection.query("SELECT * FROM role", function (error, results) {
+      if (error) {
+        throw error;
+      }
+      var roleList = results.map((role) => {
+        return {
+          name: role.title,
+          value: role.id,
+        };
+      });
+
+      inquirer
+        .prompt([
+          {
+            type: "list",
+            name: "updName",
+            message: "Which employee would you like to update?",
+            choices: empList,
+          },
+          {
+            type: "list",
+            name: "updRole",
+            message: "Which role would you like to update?",
+            choices: roleList,
+          },
+        ])
+        .then((updRole) => {
+          console.log(updRole);
+        });
+    });
+  });
 }
