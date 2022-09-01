@@ -102,37 +102,37 @@ function addDepartment() {
           if (error) {
             throw error;
           }
-          console.log("Successfully added to the department table");
+          console.log("Successfully added the new department");
           menu();
         }
       );
     });
 }
 function addRole() {
-  connection.query("SELECT * FROM department", function (error, results) {
-    if (error) {
-      throw error;
-    }
-    console.table(results);
-    menu();
-  });
+  // connection.query("SELECT * FROM department", function (error, results) {
+  //   if (error) {
+  //     throw error;
+  //   }
+  //   console.table(results);
+  //   menu();
+  // });
 
   inquirer
     .prompt([
       {
         type: "input",
         name: "newTitle",
-        message: "add the new title",
+        message: "Add the title for the new role",
       },
       {
         type: "input",
         name: "newSal",
-        message: "enter the new salary",
+        message: "Enter the salary for the new role",
       },
       {
         type: "input",
         name: "newDept",
-        message: "enter the department",
+        message: "Enter the department for the new role",
       },
     ])
     .then((RoleChoices) => {
@@ -154,65 +154,65 @@ function addRole() {
     });
 }
 function addEmployee() {
-  connection.query("SELECT * from employee", function (error, results) {
+  // connection.query("SELECT * from employee", function (error, results) {
+  //   if (error) {
+  //     throw error;
+  //   }
+  //   var empList = results.map((employee) => {
+  //     return {
+  //       name: employee.first_name + " " + employee.last_name,
+  //       value: employee.id,
+  //     };
+  //   });
+  connection.query("SELECT * from role", function (error, results) {
     if (error) {
       throw error;
     }
-    var empList = results.map((employee) => {
-      return {
-        name: employee.first_name + " " + employee.last_name,
-        value: employee.id,
-      };
-    });
-    connection.query("SELECT * from role", function (error, results) {
-      if (error) {
-        throw error;
-      }
-      var roleList = results.map((role) => {
-        return {
-          name: role.title,
-          value: role.id,
-        };
-        console.log(roleList);
+    // var roleList = results.map((role) => {
+    //   return {
+    //     name: role.title,
+    //     value: role.id,
+    //   }
+    //       console.log(roleList);
+    //     });
+    //     console.log(empList);
+    inquirer
+      .prompt([
+        {
+          type: "input",
+          name: "firstName",
+          message: "Add the employee first name",
+        },
+        {
+          type: "input",
+          name: "lastName",
+          message: "Add the employee last name",
+        },
+        {
+          type: "list",
+          name: "newRole",
+          message: "Select the role of the new employee",
+          choices: roleList,
+        },
+        {
+          type: "input",
+          name: "newMgr",
+          message: "Select the manager of the new employee if applicable",
+          choices: empList,
+        },
+      ])
+      .then((EmpChoices) => {
+        console.log(
+          EmpChoices.firstName,
+          EmpChoices.lastName,
+          EmpChoices.newRole,
+          EmpChoices.newMgr
+        );
+        menu();
       });
-      console.log(empList);
-      inquirer
-        .prompt([
-          {
-            type: "input",
-            name: "firstName",
-            message: "Add the employee first name",
-          },
-          {
-            type: "input",
-            name: "lastName",
-            message: "Add the employee last name",
-          },
-          {
-            type: "list",
-            name: "newRole",
-            message: "Select the role of the new employee",
-            choices: roleList,
-          },
-          {
-            type: "input",
-            name: "newMgr",
-            message: "Select the manager id of the new employee if applicable",
-            choices: empList,
-          },
-        ])
-        .then((EmpChoices) => {
-          console.log(
-            EmpChoices.firstName,
-            EmpChoices.lastName,
-            EmpChoices.newRole,
-            EmpChoices.newMgr
-          );
-          menu();
-        });
-    });
   });
 }
+
 function updRole() {
   connection.query("SELECT * FROM employee", function (error, results) {
     if (error) {
@@ -220,7 +220,7 @@ function updRole() {
     }
     var empList = results.map((employee) => {
       return {
-        name: employee.first_name + "" + employee.last_name,
+        name: employee.first_name + " " + employee.last_name,
         value: employee.id,
       };
     });
