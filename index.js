@@ -264,11 +264,16 @@ function updRole() {
           let updateQuery = `UPDATE employee
           SET role_id=${answers.updRole}
           WHERE id=${answers.updName}`;
+
+          `CREATE VIEW roleUpdated AS 
+            SELECT * FROM employee, 
+            JOIN role ON role.id=employee.role_id = role.id`;
           connection.query(updateQuery, (error) => {
             if (error) {
               throw error;
             }
-            console.log("updated successfully");
+
+            console.log("Role updated successfully");
             menu();
           });
         });
