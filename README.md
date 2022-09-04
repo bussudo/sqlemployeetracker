@@ -14,7 +14,7 @@ Ascii-Art
 
 ### Screenshot
 
-![Alt Text](https://github.com/bussudo/sqlemployeetracker/main/Assets/screenshot.png)
+![Alt Text](https://github.com/bussudo/sqlemployeetracker/blob/main/Assets/screenshot.png)
 
 ### Link to Deployed
 ```
