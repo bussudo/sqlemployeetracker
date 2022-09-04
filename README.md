@@ -19,3 +19,6 @@ Ascii-Art
 ### Link to Deployed
 ```
 git@github.com:bussudo/sqlemployeetracker.git
+
+### Link to Video
+https://drive.google.com/file/d/1YyHRlyM-YeNQ4Bi5pmONylQn-Dx5htpr/view
