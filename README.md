@@ -6,11 +6,11 @@ A **content management systems (CMS)** interface that allows for viewing and int
 
 ### Technologies Used
 
-Inquirer
-JavaScript
-MySQL2
-Node JS
-Ascii-Art
+* Inquirer
+* JavaScript
+* MySQL2
+* Node JS
+* Ascii-Art
 
 ### Screenshot
 
